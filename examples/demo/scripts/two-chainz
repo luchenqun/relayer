@@ -14,7 +14,7 @@ fi
 
 # Display software version for testers
 echo "GAIA VERSION INFO:"
-gaiad version --long
+gaiad version
 
 # Ensure jq is installed
 if [[ ! -x "$(which jq)" ]]; then

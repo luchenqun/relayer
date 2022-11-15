@@ -66,8 +66,8 @@ if ! mkdir -p $CHAINDIR/$CHAINID 2>/dev/null; then
 fi
 
 # Build genesis file incl account for passed address
-coins="100000000000$DENOM,100000000000$BASEDENOM"
-delegate="100000000000$DENOM"
+coins="1000000000000000000$DENOM,1000000000000000000$BASEDENOM"
+delegate="1000000000000000000$DENOM"
 
 redirect $BINARY --home $CHAINDIR/$CHAINID --chain-id $CHAINID init $CHAINID 
 sleep 1
@@ -101,6 +101,7 @@ if [ $platform = 'linux' ]; then
   sed -i 's/timeout_propose = "3s"/timeout_propose = "1s"/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i 's/index_all_keys = false/index_all_keys = true/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i 's/"bond_denom": "stake"/"bond_denom": "'"$DENOM"'"/g' $CHAINDIR/$CHAINID/config/genesis.json
+  sed -i '307s/stake/gas/g' $CHAINDIR/$CHAINID/config/genesis.json
   sed -i '96s/\[/[\"*"/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i 's/unsafe = false/unsafe = true/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i 's#"tcp://0.0.0.0:1317"#"tcp://0.0.0.0:'"$APIPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml
@@ -117,6 +118,7 @@ else
   sed -i '' 's/timeout_propose = "3s"/timeout_propose = "1s"/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i '' 's/index_all_keys = false/index_all_keys = true/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i '' 's/"bond_denom": "stake"/"bond_denom": "'"$DENOM"'"/g' $CHAINDIR/$CHAINID/config/genesis.json
+  sed -i '' '307s/stake/gas/g' $CHAINDIR/$CHAINID/config/genesis.json
   sed -i '' '96s/\[/[\"*"/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i '' 's/unsafe = false/unsafe = true/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i '' 's#"tcp://0.0.0.0:1317"#"tcp://0.0.0.0:'"$APIPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml

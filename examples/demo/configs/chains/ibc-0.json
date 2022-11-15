@@ -8,11 +8,10 @@
     "account-prefix": "cosmos",
     "keyring-backend": "test",
     "gas-adjustment": 1.5,
-    "gas-prices": "0.025stake",
+    "gas-prices": "0stake",
     "debug": true,
     "timeout": "10s",
     "output-format": "json",
     "sign-mode": "direct"
   }
 }
-

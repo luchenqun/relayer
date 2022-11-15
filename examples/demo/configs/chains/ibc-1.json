@@ -3,16 +3,15 @@
   "value": {
     "key": "testkey",
     "chain-id": "ibc-1",
-    "rpc-addr": "http://localhost:26557",
+    "rpc-addr": "http://localhost:16557",
     "grpc-addr": "",
     "account-prefix": "cosmos",
     "keyring-backend": "test",
     "gas-adjustment": 1.5,
-    "gas-prices": "0.025rice",
+    "gas-prices": "0rice",
     "debug": true,
     "timeout": "10s",
     "output-format": "json",
     "sign-mode": "direct"
   }
 }
-

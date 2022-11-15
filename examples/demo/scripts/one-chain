@@ -27,6 +27,7 @@ PROFPORT=$6
 GRPCPORT=$7
 DENOM=$8
 BASEDENOM=$9
+APIPORT=${10}
 
 if [ -z "$1" ]; then
   display_usage "[BINARY] ($BINARY|akash)"
@@ -56,7 +57,7 @@ if [ -z "$7" ]; then
   display_usage "[GRPC_PORT]"
 fi
 
-echo "Creating $BINARY instance: home=$CHAINDIR | chain-id=$CHAINID | p2p=:$P2PPORT | rpc=:$RPCPORT | profiling=:$PROFPORT | grpc=:$GRPCPORT"
+echo "Creating $BINARY instance: home=$CHAINDIR | chain-id=$CHAINID | p2p=:$P2PPORT | rpc=:$RPCPORT | profiling=:$PROFPORT | grpc=:$GRPCPORT | APIPORT=:$APIPORT"
 
 # Add dir for chain, exit if error
 if ! mkdir -p $CHAINDIR/$CHAINID 2>/dev/null; then
@@ -100,6 +101,13 @@ if [ $platform = 'linux' ]; then
   sed -i 's/timeout_propose = "3s"/timeout_propose = "1s"/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i 's/index_all_keys = false/index_all_keys = true/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i 's/"bond_denom": "stake"/"bond_denom": "'"$DENOM"'"/g' $CHAINDIR/$CHAINID/config/genesis.json
+  sed -i '96s/\[/[\"*"/g' $CHAINDIR/$CHAINID/config/config.toml
+  sed -i 's/unsafe = false/unsafe = true/g' $CHAINDIR/$CHAINID/config/config.toml
+  sed -i 's#"tcp://0.0.0.0:1317"#"tcp://0.0.0.0:'"$APIPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i '108s/enable = false/enable = true/' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i 's/swagger = false/swagger = true/g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "'"0${DENOM}"'"/g' $CHAINDIR/$CHAINID/config/app.toml
   # sed -i '' 's#index-events = \[\]#index-events = \["message.action","send_packet.packet_src_channel","send_packet.packet_sequence"\]#g' $CHAINDIR/$CHAINID/config/app.toml
 else
   sed -i '' 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:'"$RPCPORT"'"#g' $CHAINDIR/$CHAINID/config/config.toml
@@ -109,6 +117,13 @@ else
   sed -i '' 's/timeout_propose = "3s"/timeout_propose = "1s"/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i '' 's/index_all_keys = false/index_all_keys = true/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i '' 's/"bond_denom": "stake"/"bond_denom": "'"$DENOM"'"/g' $CHAINDIR/$CHAINID/config/genesis.json
+  sed -i '' '96s/\[/[\"*"/g' $CHAINDIR/$CHAINID/config/config.toml
+  sed -i '' 's/unsafe = false/unsafe = true/g' $CHAINDIR/$CHAINID/config/config.toml
+  sed -i '' 's#"tcp://0.0.0.0:1317"#"tcp://0.0.0.0:'"$APIPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i '' '108s/enable = false/enable = true/' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i '' 's/swagger = false/swagger = true/g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i '' 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i '' 's/minimum-gas-prices = ""/minimum-gas-prices = "'"0${DENOM}"'"/g' $CHAINDIR/$CHAINID/config/app.toml
   # sed -i '' 's#index-events = \[\]#index-events = \["message.action","send_packet.packet_src_channel","send_packet.packet_sequence"\]#g' $CHAINDIR/$CHAINID/config/app.toml
 fi
 

@@ -33,7 +33,7 @@ echo "balance 0 $(rly q bal ibc-0)"
 echo "balance 1 $(rly q bal ibc-1)"
 
 echo "-- Sending IBC transaction... --"
-rly tx transfer ibc-0 ibc-1 800000000000000000samoleans "$(rly keys show ibc-1)" channel-0 -d
+rly tx transfer ibc-0 ibc-1 800000000000000000aevmos "$(rly keys show ibc-1)" channel-0 -d
 sleep 5
 
 # relay remaining packets -- (could also be accomplished by running: `rly start`)

@@ -1,6 +1,6 @@
 {
   "src": {
-    "chain-id": "ibc-0"
+    "chain-id": "evmos_20191205-1"
   },
   "dst": {
     "chain-id": "ibc-1"

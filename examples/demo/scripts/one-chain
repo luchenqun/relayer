@@ -28,6 +28,7 @@ GRPCPORT=$7
 DENOM=$8
 BASEDENOM=$9
 APIPORT=${10}
+GWRPCPORT=${11}
 
 if [ -z "$1" ]; then
   display_usage "[BINARY] ($BINARY|akash)"
@@ -106,6 +107,8 @@ if [ $platform = 'linux' ]; then
   sed -i '96s/\[/[\"*"/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i 's/unsafe = false/unsafe = true/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i 's#"tcp://0.0.0.0:1317"#"tcp://0.0.0.0:'"$APIPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i 's#"0.0.0.0:9090"#"0.0.0.0:'"$GRPCPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i 's#"0.0.0.0:9091"#"0.0.0.0:'"$GWRPCPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml
   sed -i '108s/enable = false/enable = true/' $CHAINDIR/$CHAINID/config/app.toml
   sed -i '112s/enable = false/enable = true/' $CHAINDIR/$CHAINID/config/app.toml
   sed -i 's/swagger = false/swagger = true/g' $CHAINDIR/$CHAINID/config/app.toml
@@ -124,6 +127,8 @@ else
   sed -i '' '96s/\[/[\"*"/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i '' 's/unsafe = false/unsafe = true/g' $CHAINDIR/$CHAINID/config/config.toml
   sed -i '' 's#"tcp://0.0.0.0:1317"#"tcp://0.0.0.0:'"$APIPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i '' 's#"0.0.0.0:9090"#"0.0.0.0:'"$GRPCPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml
+  sed -i '' 's#"0.0.0.0:9091"#"0.0.0.0:'"$GWRPCPORT"'"#g' $CHAINDIR/$CHAINID/config/app.toml
   sed -i '' '108s/enable = false/enable = true/' $CHAINDIR/$CHAINID/config/app.toml
   sed -i '' '112s/enable = false/enable = true/' $CHAINDIR/$CHAINID/config/app.toml
   sed -i '' 's/swagger = false/swagger = true/g' $CHAINDIR/$CHAINID/config/app.toml
@@ -133,6 +138,7 @@ else
 fi
 
 # Start the gaia
-$BINARY --home $CHAINDIR/$CHAINID start --pruning=nothing --grpc-web.enable=false --grpc.address="0.0.0.0:$GRPCPORT" > $CHAINDIR/$CHAINID.log 2>&1 &
+$BINARY --home $CHAINDIR/$CHAINID start > $CHAINDIR/$CHAINID.log 2>&1 &
 
-echo "-----> $BINARY --home $CHAINDIR/$CHAINID start --pruning=nothing --grpc-web.enable=false --grpc.address="0.0.0.0:$GRPCPORT" > $CHAINDIR/$CHAINID.log"
+echo 
+echo "-----> $BINARY --home $CHAINDIR/$CHAINID start"

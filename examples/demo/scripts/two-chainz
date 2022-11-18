@@ -49,8 +49,8 @@ chainid1=cosmoshub-test
 
 echo "Generating gaia configurations..."
 mkdir -p $GAIA_DATA && cd $GAIA_DATA && cd ../
-./scripts/one-chain evmosd $chainid0 ./data 26657 26656 6060 9090 stake aevmos 1317
-./scripts/one-chain gaiad $chainid1 ./data 16657 16656 6061 9091 uatom beans 11317
+./scripts/one-chain evmosd $chainid0 ./data 26657 26656 6060 9090 stake aevmos 1317 9091
+./scripts/one-chain gaiad $chainid1 ./data 16657 16656 16060 19090 uatom beans 11317 19091
 
 [ -f $GAIA_DATA/$chainid0.log ] && echo "$chainid0 initialized. Watch file $GAIA_DATA/$chainid0.log to see its execution."
 [ -f $GAIA_DATA/$chainid1.log ] && echo "$chainid1 initialized. Watch file $GAIA_DATA/$chainid1.log to see its execution."

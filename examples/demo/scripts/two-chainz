@@ -45,12 +45,12 @@ killall evmosd &> /dev/null
 set -e
 
 chainid0=evmos_20191205-1
-chainid1=ibc-1
+chainid1=cosmoshub-test
 
 echo "Generating gaia configurations..."
 mkdir -p $GAIA_DATA && cd $GAIA_DATA && cd ../
 ./scripts/one-chain evmosd $chainid0 ./data 26657 26656 6060 9090 stake aevmos 1317
-./scripts/one-chain gaiad $chainid1 ./data 16557 16556 6061 9091 rice beans 11317
+./scripts/one-chain gaiad $chainid1 ./data 16657 16656 6061 9091 uatom beans 11317
 
 [ -f $GAIA_DATA/$chainid0.log ] && echo "$chainid0 initialized. Watch file $GAIA_DATA/$chainid0.log to see its execution."
 [ -f $GAIA_DATA/$chainid1.log ] && echo "$chainid1 initialized. Watch file $GAIA_DATA/$chainid1.log to see its execution."
@@ -69,7 +69,7 @@ rly chains add-dir configs/chains
 SEED0=$(jq -r '.mnemonic' $GAIA_DATA/$chainid0/key_seed.json)
 SEED1=$(jq -r '.mnemonic' $GAIA_DATA/$chainid1/key_seed.json)
 
-echo "Key $(rly keys restore ibc-0 testkey "$SEED0" --coin-type 60) imported from ibc-0 to relayer..."
-echo "Key $(rly keys restore ibc-1 testkey "$SEED1") imported from ibc-1 to relayer..."
+rly keys restore ibc-0 testkey "$SEED0" --coin-type 60
+rly keys restore ibc-1 testkey "$SEED1"
 
 rly paths add-dir configs/paths
